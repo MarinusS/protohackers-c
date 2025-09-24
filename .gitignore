@@ -1,0 +1,16 @@
+# Build artifacts
+/build/
+/cmake-build-*/
+*.o
+*.d
+*.a
+*.so
+*.dll
+*.dylib
+
+# Editor/OS files
+.DS_Store
+*.swp
+.vscode/
+.idea/
+

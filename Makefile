@@ -1,5 +1,5 @@
 # --- Config ---
-PROBLEMS := p00-smoke
+PROBLEMS := p00-smoke p01-prime-time
 BIN_DIR  := build/bin
 OBJ_DIR  := build/obj
 LIB_DIR  := build/lib
@@ -14,7 +14,7 @@ INC := -I$(ROOT)/lib/include -I$(ROOT)/third_party/cjson
 # Compiler/linker
 CC      := clang
 CFLAGS  := -Wall -Wextra -std=c11 -g -MMD -MP $(INC)
-LDFLAGS :=
+LDFLAGS := -lm
 
 # --- Shared objects (built once) ---
 # cJSON
@@ -35,7 +35,8 @@ DBG_CFLAGS  := -O0 -g3 -fno-omit-frame-pointer $(ASAN)
 DBG_LDFLAGS := $(ASAN)
 
 # Which binary to debug: make gdb DBG=p00-smoke
-DBG     ?= $(firstword $(PROBLEMS))
+DBG ?= $(firstword $(filter $(PROBLEMS),$(MAKECMDGOALS)))
+DBG ?= $(firstword $(PROBLEMS))
 DBG_BIN := $(BIN_DIR)/$(DBG)
 
 .PHONY: all $(PROBLEMS) clean debug gdb gdb-%

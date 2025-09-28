@@ -1,28 +1,18 @@
-# Infer problem name from directory name
-PROBLEM ?= $(notdir $(CURDIR))
-BIN     := $(BIN_DIR)/$(PROBLEM)
+SRC := $(wildcard src/*.c)
+BIN := $(BIN_DIR)/$(notdir $(CURDIR))
 
-# Sources for this problem
-SRC   := $(wildcard src/*.c)
-OBJS  := $(SRC:%.c=$(OBJ_DIR)/%.o)
-
-.PHONY: all clean run
+.PHONY: all
 all: $(BIN)
 
-# Link with shared objs provided by top-level (cJSON.o, utils.o, etc.)
-$(BIN): $(OBJS) $(LIB_OBJ)
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
-
-# Compile each .c into this problem's obj dir; emit dep files via -MMD -MP (already in CFLAGS)
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
--include $(OBJS:.o=.d)
+OBJS := $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
+DEPS := $(OBJS:.o=.d)
 
-run: $(BIN)
-	$(BIN)
+$(BIN): $(OBJS) $(LIB_OBJ)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(OBJS) $(LIB_OBJ) -o $@ $(LDFLAGS)
 
-clean:
-	rm -f $(OBJS) $(OBJS:.o=.d) $(BIN)
+-include $(DEPS)

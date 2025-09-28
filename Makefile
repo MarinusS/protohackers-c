@@ -1,5 +1,5 @@
 # --- Config ---
-PROBLEMS := p00-smoke p01-prime-time p02-means-to-an-end
+PROBLEMS := p00-smoke p01-prime-time p02-means-to-an-end p03-budget-chat
 BIN_DIR  := build/bin
 OBJ_DIR  := build/obj
 LIB_DIR  := build/lib

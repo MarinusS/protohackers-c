@@ -32,3 +32,12 @@ void hexdump(const void *data, size_t len) {
     fputs("|\n", stdout);
   }
 }
+
+inline int is_alnum_n(const uint8_t *s, size_t n) {
+  if (!s)
+    return 0;
+  for (size_t i = 0; i < n; i++)
+    if (!isalnum((unsigned char)s[i]))
+      return 0;
+  return 1;
+}
